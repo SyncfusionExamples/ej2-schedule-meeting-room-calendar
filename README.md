@@ -2,6 +2,8 @@
 
 This application has been created by making use of the [quick start](https://github.com/syncfusion/ej2-quickstart.git) project.
 
+![Meeting Room Calendar](meeting-room.png)
+
 ## How to run this application?
 
 To run this application, you need to first clone the `ej2-schedule-meeting-room-calendar` repository and then navigate to its appropriate path where it has been located in your system.
