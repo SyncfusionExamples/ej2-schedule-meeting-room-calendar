@@ -2,7 +2,7 @@
 
 This application has been created by making use of the [quick start](https://github.com/syncfusion/ej2-quickstart.git) project.
 
-![Meeting Room Calendar](meeting-room.png)
+![Meeting Room Calendar](meeting-room1.png)
 
 ## How to run this application?
 
