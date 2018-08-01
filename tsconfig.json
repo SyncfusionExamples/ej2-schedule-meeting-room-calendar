@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "amd",
+        "removeComments": true,
+        "noLib": false,
+        "sourceMap": true,
+        "pretty": true,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitUseStrict": false,
+        "noFallthroughCasesInSwitch": true,
+        "allowJs": false,
+        "noEmitOnError": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "compileOnSave": false
+}
