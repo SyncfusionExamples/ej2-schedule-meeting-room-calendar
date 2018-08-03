@@ -61,15 +61,16 @@ let scheduleOptions: ScheduleModel = {
         popupOpen: (args: PopupOpenEventArgs) => {
             let data: any = <any>args.data;
             if(args.type === "QuickInfo" || args.type === "Editor" || args.type === "RecurrenceAlert" || args.type === "DeleteAlert"){
-                if(args.target.classList.contains('e-work-cells')){
+                let target: HTMLElement = (args.type == "RecurrenceAlert" || args.type == "DeleteAlert") ? data.element[0] : args.target;
+                if(!isNullOrUndefined(target) && target.classList.contains('e-work-cells')){
                     let endDate = data.endTime as Date;
                     let startDate = data.startTime as Date;
                     let groupIndex = data.groupIndex as number;
-                    if ((args.target.classList.contains('e-read-only-cells')) || (!scheduleObj.isSlotAvailable(startDate as Date, endDate as Date, groupIndex as number))) {
+                    if ((target.classList.contains('e-read-only-cells')) || (!scheduleObj.isSlotAvailable(startDate as Date, endDate as Date, groupIndex as number))) {
                         args.cancel = true;
                     }
                 }
-                else if(args.target.classList.contains('e-appointment') && (isReadOnly(data.EndTime) || args.target.classList.contains('e-lunch-break') || args.target.classList.contains('e-maintenance'))){
+                else if(target.classList.contains('e-appointment') && (isReadOnly(data.EndTime) || target.classList.contains('e-lunch-break') || target.classList.contains('e-maintenance'))){
                     args.cancel=true;
                 }
             }
@@ -97,11 +98,22 @@ let scheduleOptions: ScheduleModel = {
             }
         },
         actionBegin: (args: ActionEventArgs) => {
-            if(args.requestType == "eventCreate") {
+            if(args.requestType == "eventCreate" || args.requestType == "eventChange"){
                 let data: any = <any>args.data;
                 let groupIndex = scheduleObj.eventBase.getGroupIndexFromEvent(data);
-                if(!scheduleObj.isSlotAvailable(data.StartTime as Date, data.EndTime as Date, groupIndex as number)) {
-                    args.cancel = true;
+                if(args.requestType == "eventCreate") {
+                    if(!scheduleObj.isSlotAvailable(data.StartTime as Date, data.EndTime as Date, groupIndex as number)) {
+                        args.cancel = true;
+                    }
+                }
+                else if (args.requestType == "eventChange") {
+                    let events : any = scheduleObj.eventBase.filterEvents(data.StartTime, data.EndTime);
+                    let index = events.findIndex((d: any) => d.Id == data.Id);
+                    if(index > 0) events.splice(index, 1);
+                    let eventsCollection : any = scheduleObj.eventBase.filterEventsByResource(scheduleObj.resourceBase.lastResourceLevel[groupIndex], events);
+                    if (eventsCollection.length > 0) {
+                        args.cancel = true;
+                    }
                 }
             }
         }
