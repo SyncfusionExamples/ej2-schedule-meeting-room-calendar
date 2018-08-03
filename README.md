@@ -12,7 +12,7 @@ The multiple resources functionalities incorporated in this sample application a
 
 * **[resources](https://ej2.syncfusion.com/documentation/schedule/resources.html?lang=typescript)** - Defines the resource data. Here, the meeting room data is provided as dataSource.
 * **[group](https://ej2.syncfusion.com/demos/#/material/schedule/group.html)** - Allows the scheduler layout to group the resources physically. Here, 5 rooms are displayed visually on the same scheduler.
-* **[byDate]**(https://ej2.syncfusion.com/demos/#/material/schedule/group-bydate.html) - Allows grouping of all the meeting rooms date-wise.
+* **[byDate](https://ej2.syncfusion.com/demos/#/material/schedule/group-bydate.html)** - Allows grouping of all the meeting rooms date-wise.
 * **[resourceHeaderTemplate](https://ej2.syncfusion.com/demos/#/material/schedule/group-custom-work-days.html)** - Allows customization of resource header cells. Here, the header row is customized by displaying the room names accompanied with its capacity and type.
 * **[allowGroupEdit](https://ej2.syncfusion.com/demos/#/material/schedule/group-editing.html)** - Allows the same appointment to be shared by more than one resource. Here, the `lunch break` and `maintenance` appointments are the grouped one and are made read-only.
 * **[Client-side events](https://ej2.syncfusion.com/demos/#/material/schedule/events.html)** - Events such as `actionBegin`, `renderCell`, `popupOpen` and `eventRendered` has been used in this application for achieving major customization of scheduler as well as in achieving the room reservation functionality. 
