@@ -67,7 +67,7 @@
     }    
 
     .e-schedule .e-vertical-view .e-work-cells, .available {
-        background-color: #e6ffe6;
+        background-color: #ddfade;
     }
 
     .e-status td {
@@ -95,12 +95,29 @@
         color: rgba(0, 0, 0, 0.87);
     }
 
-    .e-schedule .e-work-cells.lunch-break, .lunch-status {
-        background-color: rgb(0,0,0,0.14);
+    .e-schedule .e-lunch-break, .lunch-status {
+        background-color: rgb(0,0,0,0.14) !important;
+        opacity: 1 !important;
     }
 
-    .e-schedule .e-work-cells.maintenance, .maintenance-status {
-        background-color: gray;
+    .e-schedule .e-maintenance, .maintenance-status {
+        background-color: gray !important;
+        opacity: 1 !important;
+        color: antiquewhite !important;
+    }
+
+    .e-schedule .e-maintenance .e-time, .e-schedule .e-lunch-break .e-time,
+    .e-schedule .e-maintenance .e-recurrence-icon, .e-schedule .e-lunch-break .e-recurrence-icon {
+        display: none !important;
+    }
+
+    .e-schedule .e-maintenance .e-appointment-details, .e-schedule .e-lunch-break .e-appointment-details{
+        text-align: center !important;
+        padding-top: 6px !important;
+    }
+
+    .e-schedule .e-lunch-break .e-appointment-details {
+        padding-top: 22px !important;
     }
 
     .e-schedule .e-vertical-view .e-resource-cells {
