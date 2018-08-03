@@ -86,7 +86,7 @@ let scheduleOptions: ScheduleModel = {
         },
         eventRendered: (args: EventRenderedArgs) => {
             let data: any = <any>args.data;
-            if (isReadOnly(args.data) || data.EventType == "Lunch" || data.EventType == "Maintenance") {
+            if (isReadOnly(data.EndTime) || data.EventType == "Lunch" || data.EventType == "Maintenance") {
                 args.element.setAttribute('aria-readonly', 'true');
                 args.element.classList.add('e-read-only');
             }
