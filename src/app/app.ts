@@ -3,7 +3,7 @@ import {
     PopupOpenEventArgs, RenderCellEventArgs, EventRenderedArgs, ActionEventArgs, CellClickEventArgs
 } from '@syncfusion/ej2-schedule';
 import { roomData } from './datasource';
-import { addClass, createElement, extend } from '@syncfusion/ej2-base';
+import { addClass, createElement, extend, isNullOrUndefined } from '@syncfusion/ej2-base';
 import { DropDownList } from '@syncfusion/ej2-dropdowns';
 
 Schedule.Inject(Day);
@@ -14,8 +14,8 @@ interface TemplateFunction extends Window {
     getRoomType?: Function;
 }
 
-let isReadOnly: Function = (data: { [key: string]: Object }): boolean => {
-    return (data.EndTime < new Date(2018, 6, 31, 0, 0));
+let isReadOnly: Function = (endDate: Date): boolean => {
+    return (endDate < new Date(2018, 6, 31, 0, 0));
 };
 
 let data: Object[] = <Object[]>extend([], roomData, null, true);
@@ -29,11 +29,12 @@ let scheduleOptions: ScheduleModel = {
         group: {
             resources: ['Rooms'],
             byDate: true,
-            enableCompactView: false
+            enableCompactView: false,
+            allowGroupEdit: true
         },
         workHours: { start: '08:00' },
         resources: [{
-            field: 'RoomId', title: 'Select Room', name: 'Rooms',
+            field: 'RoomId', title: 'Select Room', name: 'Rooms', allowMultiple: true,
             dataSource: [
                 { text: 'Jammy Cool', id: 1, capacity: 20, type: 'Conference' },
                 { text: 'Tweety Nest', id: 2, capacity: 7, type: 'Cabin'},
@@ -49,6 +50,7 @@ let scheduleOptions: ScheduleModel = {
             enableTooltip: true,
             tooltipTemplate: '#tooltipTemplate',
             fields: {
+                id: 'Id',
                 subject: { title: 'Summary', name: 'Subject' },
                 location: { title: 'Location', name: 'Location' },
                 description: { title: 'Comments', name: 'Description' },
@@ -57,44 +59,53 @@ let scheduleOptions: ScheduleModel = {
             }
         },
         popupOpen: (args: PopupOpenEventArgs) => {
-            let data: { [key: string]: Object } = args.data as { [key: string]: Object };
-            if (isReadOnly(args.data) || args.target.classList.contains('lunch-break') || args.target.classList.contains('maintenance') || (args.target.classList.contains('e-read-only-cells')) || (!scheduleObj.isSlotAvailable(data.startTime as Date, data.EndTime as Date, data.groupIndex as number))) {
-                args.cancel = true;
+            let data: any = <any>args.data;
+            if(args.type === "QuickInfo" || args.type === "Editor" || args.type === "RecurrenceAlert" || args.type === "DeleteAlert"){
+                if(args.target.classList.contains('e-work-cells')){
+                    let endDate = data.endTime as Date;
+                    let startDate = data.startTime as Date;
+                    let groupIndex = data.groupIndex as number;
+                    if ((args.target.classList.contains('e-read-only-cells')) || (!scheduleObj.isSlotAvailable(startDate as Date, endDate as Date, groupIndex as number))) {
+                        args.cancel = true;
+                    }
+                }
+                else if(args.target.classList.contains('e-appointment') && (isReadOnly(data.EndTime) || args.target.classList.contains('e-lunch-break') || args.target.classList.contains('e-maintenance'))){
+                    args.cancel=true;
+                }
             }
         },
         renderCell: (args: RenderCellEventArgs) => {
             if (args.element.classList.contains('e-work-cells')) {
-                addClass([args.element], ['jammy', 'tweety', 'rounded', 'scenic', 'mission'][parseInt(args.element.getAttribute('data-group-index'), 10)]);
-
-                // check for lunch time and apply style based on it
-                if(args.date.getHours() == 13) {
-                    addClass([args.element],'lunch-break');
-                }
-                
-                // check and apply different maintenance timing for each meeting room
-                if(((args.element.classList.contains('jammy') || args.element.classList.contains('rounded') || args.element.classList.contains('mission')) && (args.date.getHours() == 8 && args.date.getMinutes() == 0)) || ((args.element.classList.contains('tweety') || args.element.classList.contains('scenic')) && (args.date.getHours() == 14 && args.date.getMinutes() == 0)) || ((args.element.classList.contains('rounded') || args.element.classList.contains('mission')) && (args.date.getHours() == 17 && args.date.getMinutes() == 0))){
-                    addClass([args.element],'maintenance');
-                }
-
                 // To disable the past date cells
                 if(args.date < new Date(2018, 6, 31, 0, 0)) {
                     args.element.setAttribute('aria-readonly', 'true');
                     args.element.classList.add('e-read-only-cells');
                 }
             }
-           
-
-
         },
         eventRendered: (args: EventRenderedArgs) => {
-            if (isReadOnly(args.data)) {
+            let data: any = <any>args.data;
+            if (isReadOnly(args.data) || data.EventType == "Lunch" || data.EventType == "Maintenance") {
                 args.element.setAttribute('aria-readonly', 'true');
                 args.element.classList.add('e-read-only');
             }
+            if(data.EventType == "Lunch"){
+                args.element.classList.add('e-lunch-break');
+            }
+            else if(data.EventType == "Maintenance"){
+                args.element.classList.add('e-maintenance');
+            }
+        },
+        actionBegin: (args: ActionEventArgs) => {
+            if(args.requestType == "eventCreate") {
+                let data: any = <any>args.data;
+                let groupIndex = scheduleObj.eventBase.getGroupIndexFromEvent(data);
+                if(!scheduleObj.isSlotAvailable(data.StartTime as Date, data.EndTime as Date, groupIndex as number)) {
+                    args.cancel = true;
+                }
+            }
         }
     };
-
-
 
     let scheduleObj: Schedule = new Schedule(scheduleOptions, document.getElementById('Schedule'));
 
