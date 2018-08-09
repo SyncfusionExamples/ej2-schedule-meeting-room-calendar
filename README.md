@@ -2,7 +2,7 @@
 
 A meeting room calendar displays a list of conference rooms in a corporate office with quick overview to the available rooms. Other than the reserved time slots for meeting purpose, the common unavailable timings such as lunch break and maintenance works of those meeting rooms will be blocked and unaccessible to anyone. This application has been built completely by making use of the [quick start](https://github.com/syncfusion/ej2-quickstart.git) TypeScript project.
 
-![Meeting Room Calendar](meeting-room-final.png)
+![Meeting Room Calendar](meeting-room.png)
 
 It has been developed by making use of the [multiple resources](https://ej2.syncfusion.com/documentation/schedule/resources.html?lang=typescript) feature of scheduler component.
 
