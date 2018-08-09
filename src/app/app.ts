@@ -101,19 +101,8 @@ let scheduleOptions: ScheduleModel = {
             if(args.requestType == "eventCreate" || args.requestType == "eventChange"){
                 let data: any = <any>args.data;
                 let groupIndex = scheduleObj.eventBase.getGroupIndexFromEvent(data);
-                if(args.requestType == "eventCreate") {
-                    if(!scheduleObj.isSlotAvailable(data.StartTime as Date, data.EndTime as Date, groupIndex as number)) {
-                        args.cancel = true;
-                    }
-                }
-                else if (args.requestType == "eventChange") {
-                    let events : any = scheduleObj.eventBase.filterEvents(data.StartTime, data.EndTime);
-                    let index = events.findIndex((d: any) => d.Id == data.Id);
-                    if(index > 0) events.splice(index, 1);
-                    let eventsCollection : any = scheduleObj.eventBase.filterEventsByResource(scheduleObj.resourceBase.lastResourceLevel[groupIndex], events);
-                    if (eventsCollection.length > 0) {
-                        args.cancel = true;
-                    }
+                if(!scheduleObj.isSlotAvailable(data.StartTime as Date, data.EndTime as Date, groupIndex as number)) {
+                    args.cancel = true;
                 }
             }
         }
