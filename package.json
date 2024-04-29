@@ -1,29 +1,38 @@
 {
-    "name": "ej2-quickstart",
-    "version": "0.0.1",
-    "description": "Essential JS 2 typescript quick start application",
-    "author": "Syncfusion Inc.",
-    "license": "SEE LICENSE IN license",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/syncfusion/ej2-quickstart.git"
-    },
-    "dependencies": {
-        "@syncfusion/ej2": "*"
-    },
-    "devDependencies": {
-        "browser-sync": "^2.18.12",
-        "gulp": "^3.9.1",
-        "gulp-protractor": "^4.1.0",
-        "gulp-typescript": "^2.13.0",
-        "jasmine": "^2.6.0",
-        "systemjs": "^0.20.14",
-        "typescript": "2.3.4"
-    },
-    "scripts": {
-        "start": "gulp start",
-        "serve": "gulp e2e-serve",
-        "test": "gulp e2e-test",
-        "update-webdriver": "gulp e2e-webdriver-update"
-    }
+  "name": "ej2-quickstart",
+  "version": "0.0.1",
+  "description": "Essential JS 2 typescript quick start application",
+  "author": "Syncfusion Inc.",
+  "license": "SEE LICENSE IN license",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/syncfusion/ej2-quickstart.git"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --mode production",
+    "serve": "gulp e2e-serve",
+    "test": "gulp e2e-test",
+    "update-webdriver": "gulp e2e-webdriver-update"
+  },
+  "devDependencies": {
+    "ajv": "^8.11.2",
+    "browser-sync": "^2.18.12",
+    "gulp": "*",
+    "typescript": "*",
+    "gulp-protractor": "*",
+    "gulp-typescript": "*",
+    "jasmine": "^2.6.0",
+    "css-loader": "^6.7.2",
+    "ts-loader": "^9.4.1",
+    "mini-css-extract-plugin": "^2.7.0",
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0",
+    "webpack-dev-server": "^4.11.1",
+    "webpack-stream": "^7.0.0"
+  },
+  "dependencies": {
+    "@syncfusion/ej2": "*"
+  }
 }

@@ -15,7 +15,7 @@ interface TemplateFunction extends Window {
 }
 
 let isReadOnly: Function = (endDate: Date): boolean => {
-    return (endDate < new Date(2018, 6, 31, 0, 0));
+    return (endDate < new Date(2024, 6, 31, 0, 0));
 };
 
 let data: Object[] = <Object[]>extend([], roomData, null, true);
@@ -23,7 +23,7 @@ let scheduleOptions: ScheduleModel = {
         width: '100%',
         height: '850px',
         currentView: "Day",
-        selectedDate: new Date(2018, 6, 31),
+        selectedDate: new Date(2024, 6, 31),
         resourceHeaderTemplate: '#resourceTemplate',
         showWeekend: false,
         group: {
@@ -78,7 +78,7 @@ let scheduleOptions: ScheduleModel = {
         renderCell: (args: RenderCellEventArgs) => {
             if (args.element.classList.contains('e-work-cells')) {
                 // To disable the past date cells
-                if(args.date < new Date(2018, 6, 31, 0, 0)) {
+                if(args.date < new Date(2024, 6, 31, 0, 0)) {
                     args.element.setAttribute('aria-readonly', 'true');
                     args.element.classList.add('e-read-only-cells');
                 }
