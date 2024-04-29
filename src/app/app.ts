@@ -15,7 +15,7 @@ interface TemplateFunction extends Window {
 }
 
 let isReadOnly: Function = (endDate: Date): boolean => {
-    return (endDate < new Date(2018, 6, 31, 0, 0));
+    return (endDate < new Date(2024, 6, 31, 0, 0));
 };
 
 let data: Object[] = <Object[]>extend([], roomData, null, true);
@@ -23,7 +23,7 @@ let scheduleOptions: ScheduleModel = {
         width: '100%',
         height: '850px',
         currentView: "Day",
-        selectedDate: new Date(2018, 6, 31),
+        selectedDate: new Date(2024, 6, 31),
         resourceHeaderTemplate: '#resourceTemplate',
         showWeekend: false,
         group: {
@@ -58,13 +58,14 @@ let scheduleOptions: ScheduleModel = {
                 endTime: { title: 'To', name: 'EndTime' }
             }
         },
-        popupOpen: (args: PopupOpenEventArgs) => {
+    popupOpen: (args: PopupOpenEventArgs) => {
             let data: any = <any>args.data;
-            if(args.type === "QuickInfo" || args.type === "Editor" || args.type === "RecurrenceAlert" || args.type === "DeleteAlert"){
-                let target: HTMLElement = (args.type == "RecurrenceAlert" || args.type == "DeleteAlert") ? data.element[0] : args.target;
+        if (args.type === "QuickInfo" || args.type === "Editor" || args.type === "RecurrenceAlert" || args.type === "DeleteAlert") {
+                
+                let target: Element = (args.type == "RecurrenceAlert" || args.type == "DeleteAlert") ? args.element  : args.target;
                 if(!isNullOrUndefined(target) && target.classList.contains('e-work-cells')){
-                    let endDate = data.endTime as Date;
-                    let startDate = data.startTime as Date;
+                    let endDate = data.EndTime as Date;
+                    let startDate = data.StartTime as Date;
                     let groupIndex = data.groupIndex as number;
                     if ((target.classList.contains('e-read-only-cells')) || (!scheduleObj.isSlotAvailable(startDate as Date, endDate as Date, groupIndex as number))) {
                         args.cancel = true;
@@ -78,7 +79,7 @@ let scheduleOptions: ScheduleModel = {
         renderCell: (args: RenderCellEventArgs) => {
             if (args.element.classList.contains('e-work-cells')) {
                 // To disable the past date cells
-                if(args.date < new Date(2018, 6, 31, 0, 0)) {
+                if(args.date < new Date(2024, 6, 31, 0, 0)) {
                     args.element.setAttribute('aria-readonly', 'true');
                     args.element.classList.add('e-read-only-cells');
                 }
@@ -99,11 +100,17 @@ let scheduleOptions: ScheduleModel = {
         },
         actionBegin: (args: ActionEventArgs) => {
             if(args.requestType == "eventCreate" || args.requestType == "eventChange"){
-                let data: any = <any>args.data;
-                let groupIndex = scheduleObj.eventBase.getGroupIndexFromEvent(data);
-                if(!scheduleObj.isSlotAvailable(data.StartTime as Date, data.EndTime as Date, groupIndex as number)) {
-                    args.cancel = true;
+                if (args.requestType === "eventCreate") {
+                    if(!scheduleObj.isSlotAvailable(args.addedRecords[0].StartTime as Date, args.addedRecords[0].EndTime as Date)) {
+                        args.cancel = true;
+                    }
                 }
+                else if (args.requestType === "eventChange") {
+                    if(!scheduleObj.isSlotAvailable(args.changedRecords[0].StartTime as Date, args.changedRecords[0].EndTime as Date)) {
+                        args.cancel = true;
+                    }
+                }
+                
             }
         }
     };
